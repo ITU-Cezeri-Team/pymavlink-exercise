@@ -25,6 +25,7 @@ master.mav.command_long_send(
     0,
     0
 )
+print("Cihaz arming komutu gönderildi.")
 
 master.mav.command_long_send(
     1,  # Sistem ID
@@ -41,6 +42,14 @@ master.mav.command_long_send(
 )
 
 print("Kalkış komutu gönderildi. Drone 10 metreye çıkacak.")
+
+while True:
+    msg = master.recv_match(type='HEARTBEAT', blocking=True)
+    system_status = msg.system_status
+    if system_status == mavutil.mavlink.MAV_STATE_ACTIVE:
+        print("Drone aktif ve uçuşa geçti.")
+    else:
+        print(f"Sistem durumu: {system_status}")
 '''
 master.mav.command_long_send(
     1,  # Sistem ID
@@ -55,6 +64,5 @@ master.mav.command_long_send(
     0,
     0
 )
-'''
 print("Cihaz disarming komutu gönderildi.")
-print("Cihaz arming komutu gönderildi.")
+'''
