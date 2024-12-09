@@ -15,7 +15,7 @@ print("Connection established")
 arm_control = input("For ARM press Y: ").lower()
 
 if arm_control=="y":
-    master.set_mode(mavutil.mavlink.MAV_MODE_STABİLİZE_ARMED)
+    master.set_mode(mavutil.mavlink.MAV_MODE_STABILIZE_ARMED)
     master.arducopter_arm()
     print("Motorlar aktif edildi.")
 else:
