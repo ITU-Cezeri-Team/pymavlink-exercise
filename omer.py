@@ -11,7 +11,7 @@ import time
 master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
 print("Connected")
 
-
+master.set_mode(mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED)
 master.mav.command_long_send(
     1,  # Sistem ID (burada 1 genellikle drone'dur)
     1,  # Bileşen ID (genellikle 1)
