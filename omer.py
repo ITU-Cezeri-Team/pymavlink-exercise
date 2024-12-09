@@ -1,5 +1,7 @@
-from pymavlink import mavutil
 import time
+import threading
+from pynput import keyboard
+from pymavlink import mavutil
 
 # MAVLink bağlantısını başlat
 connection = mavutil.mavlink_connection('udp:192.168.4.113:14551')  # Bağlantı adresini uygun şekilde değiştirin
@@ -28,65 +30,101 @@ if msg:
             print("No GPS fix.")
 
 # print("gps received")
-answer = input("ready to take off y/n: ").lower()
-if answer == "y":
- #Cihazın armed durumda olduğundan emin olun
-    print("Arming the drone...")
-    connection.arducopter_arm()
 
+# Wait for heartbeat to make sure we're connected
+connection.wait_heartbeat()
+print("Heartbeat received, connection successful.")
 
-    # # Birkaç saniye bekleyelim ki cihaz arming işlemini gerçekleştirsin
-    time.sleep(3)
-
-    # # Modu değiştir (GUIDED mode)
-    print("Changing mode to GUIDED...")
-    connection.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
-
-    # # Mod değişikliklerinin gerçekleşmesini bekleyelim
-    time.sleep(2)
-    # Kalkış komutunu gönder (10 metre yükseklik hedefi)
-    print("Sending takeoff command...")
-    connection.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
-    print("Switched to GUIDED mode.")
-    takeoff_altitude = 10  # 10 metre
-    connection.mav.command_long_send(
-    connection.target_system, 
-    connection.target_component, 
-    mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 
-    0,  # confirmation (0: no confirmation needed)
-    0, 0, 0, 0, 0, 0, takeoff_altitude  # kalkış yüksekliği
-    )
-
-    # # Kalkış komutunun gönderildiğini belirten mesaj
-    print("Takeoff command sent. Drone is taking off to 10 meters.")
-    is_moving = input("Do you want to move the drone y/n: ").lower()
-            
-         
-    is_landing = input("Do you want to land the drone y/n:").lower()
+# Function to listen for 'Y' key press to land
+def listen_for_land_key():
     while True:
-        if is_landing == "y":
-            print("Sending land command...")
-            connection.mav.command_long_send(
-                1,  # System ID
-                1,  # Component ID
-                mavutil.mavlink.MAV_CMD_NAV_LAND,  # Land command
-                0,  # Confirmation (0 for no confirmation)
-                0,  # Target latitude (use 0 for current location)
-                0,  # Target longitude (use 0 for current location)
-                0,  # Target altitude (use 0 for current altitude)
-                0,  # Reserved for future use
-                0,  # Reserved for future use
-                0,  # Reserved for future use
-                0   # Reserved for future use
-            )
+        with keyboard.Listener(on_press=on_press) as listener:
+            listener.join()
 
-            # Print confirmation that the land command was sent
-            print("Land command sent. The drone will land now.")
-            break
-        else:
-            is_landing = input("Do you want to land the drone y/n:").lower()
+# Handle key press event
+def on_press(key):
+    try:
+        if key.char == 'y':  # Check if the 'Y' key was pressed
+            print("Y key pressed, landing the drone.")
+            land_drone()
+    except AttributeError:
+        pass
 
-    
+# Function to arm the drone
+def arm_drone():
+    print("Arming the drone...")
+    connection.mav.command_long_send(
+        1,  # System ID
+        1,  # Component ID
+        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # Arming command
+        0,  # Unused
+        1,  # Armed (1 = armed, 0 = disarmed)
+        0,  # Unused
+        0,  # Unused
+        0,  # Unused
+        0,  # Unused
+        0,  # Unused
+        0   # Unused
+    )
+    time.sleep(3)  # Wait a moment for arming to complete
+    print("Drone armed.")
 
-         
+# Function to send takeoff command
+def takeoff_drone(altitude=10):
+    print(f"Taking off to {altitude} meters.")
+    connection.mav.command_long_send(
+        1,  # System ID
+        1,  # Component ID
+        mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,  # Takeoff command
+        0,  # Confirmation (0 for no confirmation)
+        0,  # Latitude (not used)
+        0,  # Longitude (not used)
+        altitude,  # Target altitude in meters
+        0,  # Yaw angle (0 = no change)
+        0,  # Reserved
+        0,  # Reserved
+        0   # Reserved
+    )
+    time.sleep(5)  # Wait a moment for takeoff to begin
+    print("Drone is in the air.")
 
+# Function to land the drone
+def land_drone():
+    print("Landing the drone...")
+    connection.mav.command_long_send(
+        1,  # System ID
+        1,  # Component ID
+        mavutil.mavlink.MAV_CMD_NAV_LAND,  # Land command
+        0,  # Confirmation (0 for no confirmation)
+        0,  # Latitude (not used)
+        0,  # Longitude (not used)
+        0,  # Altitude (not used)
+        0,  # Reserved
+        0,  # Reserved
+        0,  # Reserved
+        0   # Reserved
+    )
+    print("Drone is landing.")
+
+# Ask user if the drone is ready for takeoff
+ready_for_takeoff = input("Are you ready for takeoff? (y/n): ").lower()
+
+if ready_for_takeoff == "y":
+    # Arm the drone
+    arm_drone()
+
+    # Takeoff the drone to 10 meters
+    takeoff_drone(altitude=10)
+
+    # Start listening for the 'Y' key to land
+    land_listener_thread = threading.Thread(target=listen_for_land_key)
+    land_listener_thread.daemon = True  # Allow the thread to be killed when the program ends
+    land_listener_thread.start()
+
+    print("Press 'Y' to land the drone.")
+
+    # Keep the program running
+    while True:
+        time.sleep(1)
+else:
+    print("Takeoff aborted.")
