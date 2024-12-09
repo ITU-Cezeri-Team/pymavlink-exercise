@@ -1,14 +1,17 @@
 from pymavlink import mavutil
 
 # Start a connection listening on a UDP port
-the_connection = mavutil.mavlink_connection('udpin:192.168.4.161:14540')
-print("connected")
+
 
 # Wait for the first heartbeat
 #   This sets the system and component ID of remote system for the link
-the_connection.wait_heartbeat()
+#recv_match
+# Bağlantıyı başlat
+master = mavutil.mavlink_connection('/dev/serial10', baud=57600)
 
-print("ok")
-print(the_connection.recv_match().to_dict())
+# Heartbeat mesajlarını dinle
+while True:
+    msg = master.recv_match(type='HEARTBEAT', blocking=True)
+    print(f"Received heartbeat message: {msg}")
 
 # Once connected, use 'the_connection' to get and send messages
