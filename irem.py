@@ -8,7 +8,7 @@ print(drone_connection.wait_heartbeat())
 armcontrol = input("for ARM enter Y").lower()
 
 if armcontrol == 'y':
-    drone_connection.mav.commend_long_send(drone_connection.target_system, 
+    drone_connection.mav.command_long_send(drone_connection.target_system, 
                                         drone_connection.target_component,
                                         mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 1, 0, 0, 0, 0, 0, 0)
 
@@ -16,7 +16,7 @@ if armcontrol == 'y':
 disarmcontrol = input("for DİSARM enter Y").lower()
 
 if disarmcontrol == 'y':
-    drone_connection.mav.commend_long_send(drone_connection.target_system, 
+    drone_connection.mav.command_long_send(drone_connection.target_system, 
                                         drone_connection.target_component,
                                         mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 0, 0, 0, 0, 0, 0, 0)
 
