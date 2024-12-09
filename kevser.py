@@ -4,6 +4,7 @@ from pymavlink import mavutil
 
 # Bağlantıyı kur
 master = mavutil.mavlink_connection('udp:192.168.4.161:14550')
+print("Connection established")
 
 # Heartbeat mesajını bekle
 master.wait_heartbeat()
