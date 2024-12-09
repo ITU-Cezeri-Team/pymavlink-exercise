@@ -11,20 +11,7 @@ import time
 master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
 print("Connected")
 
-master.set_mode(1,mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,4)
-master.mav.command_long_send(
-    1,  # Sistem ID (burada 1 genellikle drone'dur)
-    1,  # Bileşen ID (genellikle 1)
-    mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # Arming komutu
-    0,  # 0 = disarmed, 1 = armed
-    0,  # Parametreler (ihtiyaç yok)
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-)
+master.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
 print("Cihaz arming komutu gönderildi.")
 
 master.mav.command_long_send(
@@ -40,6 +27,7 @@ master.mav.command_long_send(
     0,  # Parametre
     0   # Parametre
 )
+master.arducopter_diasrm()
 
 print("Kalkış komutu gönderildi. Drone 10 metreye çıkacak.")
 
