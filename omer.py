@@ -10,15 +10,9 @@ import time
 # Bağlantıyı başlat
 master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
 print("Connected")
-try:
-
-    master.wait_heartbeat(timeout=1)
-    print("Heartbeat alındı")
-except:
-    print("zayıf")
 
 while True:
-    msg = master.recv_match(type='HEARTBEAT', blocking=True)
+    msg = master.recv_match(type='HEARTBEAT', blocking=False)
     system_status = msg.system_status
     if system_status == mavutil.mavlink.MAV_STATE_ACTIVE:
         print("Cihaz aktif ve uçuşa/harekete hazır!")
