@@ -1,5 +1,4 @@
 import time
-import threading
 from pymavlink import mavutil
 
 
@@ -50,6 +49,17 @@ def arm_drone():
     time.sleep(3)  # Wait for arming to complete
     print("Drone armed.")
 
+# Function to change the drone's mode to stabilize
+def stabilize_drone():
+    print("Changing drone mode to stabilize...")
+    connection.mav.set_mode_send(
+        1,  # System ID
+        mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,  # Custom mode enabled
+        mavutil.mavlink.MAV_MODE_GUIDED_ARMED  # Set mode to GUIDED, which is stabilized flight
+    )
+    time.sleep(2)  # Wait for the drone to switch modes
+    print("Drone is stabilized and in GUIDED mode.")
+
 # Function to send takeoff command
 def takeoff_drone(altitude=10):
     print(f"Taking off to {altitude} meters.")
@@ -93,6 +103,9 @@ ready_for_takeoff = input("Are you ready for takeoff? (yes/no): ").strip().lower
 if ready_for_takeoff == "yes":
     # Arm the drone
     arm_drone()
+
+    # Stabilize the drone before takeoff
+    stabilize_drone()
 
     # Takeoff the drone to 10 meters
     takeoff_drone(altitude=10)
