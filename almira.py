@@ -11,7 +11,7 @@ if arm_control == "y":
     connection.set_mode(mavutil.mavlink.MAV_MODE_STABILIZE_ARMED)
     print("Switched to GUIDED mode.")
     # to disarm change 1 to 0.
-    connection.command_long_send(connection.target_system, connection.target_component, mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 1, 0, 0, 0, 0, 0, 0)
+    connection.mav.command_long_send(connection.target_system, connection.target_component, mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 1, 0, 0, 0, 0, 0, 0)
 
     msg = connection.recv_match('COMMAND_ACK', blocking=True)
     print(msg)
