@@ -3,11 +3,11 @@ import time
 
 # Replace with your connection string. Here, I'm using a serial connection as an example.
 # For example, replace 'COM3' with the actual port name on your computer, or use 'udp:127.0.0.1:14550' for UDP connection.
-connection_string = '192.168.4.113'  # for Linux/OS X, 'COM3' for Windows
+  # for Linux/OS X, 'COM3' for Windows
 baud_rate = 57600  # Standard baud rate for most flight controllers
 
 # Create a connection
-master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
+master = mavutil.mavlink_connection('udp:127.0.0.1:14550')
 
 # Wait for the heartbeats to confirm the connection
 print("Waiting for heartbeat from the drone...")
