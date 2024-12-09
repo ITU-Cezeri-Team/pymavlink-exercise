@@ -4,7 +4,7 @@ send_arm_command = True
 send_takeoff_command = True
 
 # Start a connection listening to a UDP port
-the_connection = mavutil.mavlink_connection('udpin:localhost:14551')
+the_connection = mavutil.mavlink_connection('/dev/serial0', baud=57600)
 
 # Wait for the first heartbeat
 #   This sets the system and component ID of remote system for the link
