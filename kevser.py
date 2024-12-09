@@ -6,11 +6,17 @@ from pymavlink import mavutil
 master = mavutil.mavlink_connection('/dev/serial0', baud=57600)
 print("Connection established")
 
+arm_control = input("For ARM press Y").lower()
+
+if arm_control=="y":
+    master.arducopter_arm()
+    print("Motorlar aktif edildi.")
+
+
 master.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
 print("Switched to GUIDED mode.")
 
-master.arducopter_arm()
-print("Motorlar aktif edildi.")
+
 
 takeoff_altitude = 10  # 10 metre
 master.mav.command_long_send(
@@ -21,8 +27,6 @@ master.mav.command_long_send(
     0, 0, 0, 0, 0, 0, takeoff_altitude  # kalkış yüksekliği
 )
 print(f"Takeoff command sent to reach {takeoff_altitude} meters.")
-
-
 
 
 master.arducopter_disarm()
