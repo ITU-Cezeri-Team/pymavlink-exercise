@@ -1,40 +1,41 @@
+
+
 from pymavlink import mavutil
-import time
 
-# Replace with your connection string. Here, I'm using a serial connection as an example.
-# For example, replace 'COM3' with the actual port name on your computer, or use 'udp:127.0.0.1:14550' for UDP connection.
-  # for Linux/OS X, 'COM3' for Windows
-baud_rate = 57600  # Standard baud rate for most flight controllers
+# Bağlantıyı kur
+master = mavutil.mavlink_connection('/dev/serial0', baud=57600)
+print("Connection established")
 
-# Create a connection
-master = mavutil.mavlink_connection('udp:192.168.4.113:14550')
+arm_control = input("For ARM press Y: ").lower()
 
-# Wait for the heartbeats to confirm the connection
-print("Waiting for heartbeat from the drone...")
-print("Heartbeat from system (System ID: %d, Component ID: %d)" % (master.target_system, master.target_component))
+if arm_control=="y":
+    master.arducopter_arm()
+    print("Motorlar aktif edildi.")
+else:
+    pass 
 
-# Request basic information (for example, GPS data)        
-master.mav.request_data_stream_send(master.target_system, master.target_component,
-                                    mavutil.mavlink.MAV_DATA_STREAM_ALL, 1, 1)
+takeoff_control = input("For take off press Y: ").lower()
 
-# Let's print the GPS data
+if takeoff_control=="y":
+    master.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
+    print("Switched to GUIDED mode.")
+    takeoff_altitude = 10  # 10 metre
+    master.mav.command_long_send(
+    master.target_system, 
+    master.target_component, 
+    mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 
+    0,  # confirmation (0: no confirmation needed)
+    0, 0, 0, 0, 0, 0, takeoff_altitude  # kalkış yüksekliği
+    )
+    print(f"Takeoff command sent to reach {takeoff_altitude} meters.")
 
 
-# Arm the drone
-print("Arming the drone...")
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 1, 0, 0, 0, 0, 0, 0
-)
 
-time.sleep(5)
 
-# Disarm the drone (optional, you can skip this if you don't want to disarm after arming)
-print("Disarming the drone...")
-master.mav.command_long_send(
-    master.target_system, master.target_component,
-    mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 0, 0, 0, 0, 0, 0, 0
-)
 
-# Close the connection
-master.close()
+
+
+
+master.arducopter_disarm()
+print("Motorlar pasif edildi.")
+
