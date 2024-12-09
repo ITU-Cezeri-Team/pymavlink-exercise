@@ -12,6 +12,16 @@ print("Switched to GUIDED mode.")
 master.arducopter_arm()
 print("Motorlar aktif edildi.")
 
+takeoff_altitude = 10  # 10 metre
+master.mav.command_long_send(
+    master.target_system, 
+    master.target_component, 
+    mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 
+    0,  # confirmation (0: no confirmation needed)
+    0, 0, 0, 0, 0, 0, takeoff_altitude  # kalkış yüksekliği
+)
+print(f"Takeoff command sent to reach {takeoff_altitude} meters.")
+
 
 
 
