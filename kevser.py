@@ -5,7 +5,7 @@ from pymavlink import mavutil
 # Bağlantıyı kur
 master = mavutil.mavlink_connection('/dev/serial0', baud=57600)
 print("Connection established")
-
+"""
 # Heartbeat mesajını bekle
 try:
     master.wait_heartbeat(timeout=10)  # 10 saniye bekler
@@ -13,7 +13,7 @@ try:
 except Exception as e:
     print(f"Heartbeat alınamadı: {e}")
     exit()  # Eğer heartbeat alınmazsa programı sonlandır
-
+"""
 # Batarya durumunu al
 try:
     battery = master.recv_match(type='BATTERY_STATUS', blocking=True)
@@ -25,7 +25,7 @@ try:
         print("Batarya durumu alınamadı.")
 except Exception as e:
     print(f"Batarya durumu alınamadı: {e}")
-
+"""
 # Heartbeat mesajını tekrar al
 try:
     heartbeat = master.recv_match(type='HEARTBEAT', blocking=True)
@@ -34,3 +34,4 @@ try:
     print(f"Özel Mod: {heartbeat.custom_mode}")
 except Exception as e:
     print(f"Heartbeat mesajı alınamadı: {e}")
+"""
