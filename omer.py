@@ -18,6 +18,11 @@ except:
     print("zayıf")
 
 while True:
-    # Gelen mesajı al
     msg = master.recv_match(type='HEARTBEAT', blocking=True)
-    print(f"Gelen Heartbeat mesajı: {msg}")
+    system_status = msg.system_status
+    if system_status == mavutil.mavlink.MAV_STATE_ACTIVE:
+        print("Cihaz aktif ve uçuşa/harekete hazır!")
+    elif system_status == mavutil.mavlink.MAV_STATE_UNINIT:
+        print("Cihaz başlatılmamış.")
+    else:
+        print(f"Diğer durum: {system_status}")
