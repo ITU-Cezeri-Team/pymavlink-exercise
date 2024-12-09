@@ -13,7 +13,8 @@ try:
 except Exception as e:
     print(f"Heartbeat alınamadı: {e}")
 
-# Alınan heartbeat mesajını incele
+battery = master.recv_match(type='BATTERY_STATUS', blocking=True)
+print(battery.voltages[0] / 1000)
 heartbeat = master.recv_match(type='HEARTBEAT', blocking=True)
 print(f"Sistem Durumu: {heartbeat.system_status}")
 print(f"Temel Mod: {heartbeat.base_mode}")
