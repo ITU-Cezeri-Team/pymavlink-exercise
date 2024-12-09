@@ -46,12 +46,15 @@ if answer == "y":
     time.sleep(2)
     # Kalkış komutunu gönder (10 metre yükseklik hedefi)
     print("Sending takeoff command...")
+    connection.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
+    print("Switched to GUIDED mode.")
+    takeoff_altitude = 10  # 10 metre
     connection.mav.command_long_send(
-        connection.target_system, 
-        connection.target_component, 
-        mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 
-        0,  # confirmation (0: no confirmation needed)
-        0, 0, 0, 0, 0, 0, 10  # kalkış yüksekliği
+    connection.target_system, 
+    connection.target_component, 
+    mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 
+    0,  # confirmation (0: no confirmation needed)
+    0, 0, 0, 0, 0, 0, takeoff_altitude  # kalkış yüksekliği
     )
 
     # # Kalkış komutunun gönderildiğini belirten mesaj
