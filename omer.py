@@ -10,19 +10,18 @@ import time
 # Bağlantıyı başlat
 master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
 print("Connected")
-try:
 
-    master.wait_heartbeat(timeout=1)
-    print("Heartbeat alındı")
-except:
-    print("zayıf")
-
-while True:
-    master.mav.heartbeat_send(
-        6,  # SYSTEM_TYPE_GCS (Yer İstasyonu)
-        0,  # COMPONENT_TYPE_SYSTEM (Bileşen türü)
-        0,  # Sistem durumu (0 = aktif)
-    )
-    print("Heartbeat mesajı gönderildi")
-    time.sleep(1)  # 1 saniyede bir heartbeat gönder
-# Once connected, use 'the_connection' to get and send messages
+master.mav.command_long_send(
+    1,  # Sistem ID (burada 1 genellikle drone'dur)
+    1,  # Bileşen ID (genellikle 1)
+    mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # Arming komutu
+    0,  # 0 = disarmed, 1 = armed
+    0,  # Parametreler (ihtiyaç yok)
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+)
+print("Cihaz arming komutu gönderildi.")
