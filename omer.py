@@ -18,11 +18,6 @@ except:
     print("zayıf")
 
 while True:
-    master.mav.heartbeat_send(
-        6,  # SYSTEM_TYPE_GCS (Yer İstasyonu)
-        0,  # COMPONENT_TYPE_SYSTEM (Bileşen türü)
-        0,  # Sistem durumu (0 = aktif)
-    )
-    print("Heartbeat mesajı gönderildi")
-    time.sleep(1)  # 1 saniyede bir heartbeat gönder
-# Once connected, use 'the_connection' to get and send messages
+    # Gelen mesajı al
+    msg = master.recv_match(type='HEARTBEAT', blocking=True)
+    print(f"Gelen Heartbeat mesajı: {msg}")
