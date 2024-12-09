@@ -18,7 +18,7 @@ except:
     print("zayıf")
 
 while True:
-    master.mav.hearbeat_send(
+    master.mav.heartbeat_send(
         6,  # SYSTEM_TYPE_GCS (Yer İstasyonu)
         0,  # COMPONENT_TYPE_SYSTEM (Bileşen türü)
         0,  # Sistem durumu (0 = aktif)
