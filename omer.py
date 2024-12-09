@@ -154,7 +154,7 @@ def force_arm_drone():
 # Drone'un arm durumu kontrolü
 def check_if_armed():
     # HEARTBEAT mesajı al
-    msg = connection.recv_match(type='HEARTBEAT', blocking=True)
+    msg = connection.recv_match(type='HEARTBEAT', blocking=False)
     
     if msg:
         # ARM durumunu kontrol et
