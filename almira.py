@@ -1,6 +1,6 @@
 from pymavlink import mavutil
 
-connection = mavutil.mavlink_connection('udpin:localhost:14551')
+connection = mavutil.mavlink_connection('/dev/serial0', baud=57600)
 
 arm_control = input("Press y to arm: ").lower()
 
