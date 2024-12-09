@@ -1,7 +1,7 @@
 from pymavlink import mavutil
 
 # Port aralığında deneme yap
-ip_address = '192.168.4.161'
+ip_address = 'dev/serial0'
 for port in range(14550, 14556):
     try:
         print(f"Bağlanmayı deniyor: udp:{ip_address}:{port}")
