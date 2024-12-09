@@ -28,7 +28,7 @@ print("Changing mode to GUIDED...")
 connection.mav.set_mode_send(
     1,  # Sistem ID
     mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,  # Custom Mode Flag
-    4   # GUIDED mode (4: Guided Mode)
+    0   # GUIDED mode (4: Guided Mode)
 )
 
 # Mod değişikliklerinin gerçekleşmesini bekleyelim
