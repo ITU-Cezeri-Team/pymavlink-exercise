@@ -10,6 +10,12 @@ import time
 # Bağlantıyı başlat
 master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
 print("Connected")
+try:
+
+    master.wait_heartbeat(timeout=10)
+    print("Heartbeat alındı")
+except:
+    print("zayıf")
 
 while True:
     master.mav.hearbeat_send(
