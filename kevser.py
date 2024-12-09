@@ -4,6 +4,7 @@ from pymavlink import mavutil
 
 # Bağlantıyı kur
 master = mavutil.mavlink_connection('/dev/serial0')
+print("Connection established")
 
 # Heartbeat mesajını bekle
 master.wait_heartbeat()
