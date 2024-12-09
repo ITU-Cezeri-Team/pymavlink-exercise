@@ -12,7 +12,7 @@ master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
 print("Connected")
 try:
 
-    master.wait_heartbeat(timeout=10)
+    master.wait_heartbeat(timeout=1)
     print("Heartbeat alındı")
 except:
     print("zayıf")
