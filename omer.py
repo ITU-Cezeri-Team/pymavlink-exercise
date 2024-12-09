@@ -11,12 +11,4 @@ import time
 master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
 print("Connected")
 
-while True:
-    msg = master.recv_match(type='HEARTBEAT', blocking=True)
-    system_status = msg.system_status
-    if system_status == mavutil.mavlink.MAV_STATE_ACTIVE:
-        print("Cihaz aktif ve uçuşa/harekete hazır!")
-    elif system_status == mavutil.mavlink.MAV_STATE_UNINIT:
-        print("Cihaz başlatılmamış.")
-    else:
-        print(f"Diğer durum: {system_status}")
+master.mav.command_long_send(1,1)
