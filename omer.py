@@ -20,7 +20,7 @@ master.mav.request_data_stream_send(master.target_system, master.target_componen
 
 # Let's print the GPS data
 for i in range(10):  # Get 10 GPS updates
-    msg = master.recv_match(type='GPS_RAW_INT', blocking=True)
+    msg = master.recv_match(type='GPS_RAW_INT', blocking=False)
     print(f"GPS: {msg.lat}, {msg.lon}, {msg.alt}")
     time.sleep(1)
 
