@@ -8,7 +8,7 @@ import time
 #   This sets the system and component ID of remote system for the link
 #recv_match
 # Bağlantıyı başlat
-master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
+master = mavutil.mavlink_connection('udpout:172.20.10.3:14540')
 print("Connected")
 
 master.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
