@@ -6,11 +6,13 @@ from pymavlink import mavutil
 master = mavutil.mavlink_connection('/dev/serial0', baud=57600)
 print("Connection established")
 
-arm_control = input("For ARM press Y").lower()
+arm_control = input("For ARM press Y: ").lower()
 
 if arm_control=="y":
     master.arducopter_arm()
     print("Motorlar aktif edildi.")
+else:
+    pass 
 
 
 master.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
