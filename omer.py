@@ -8,6 +8,7 @@ from pymavlink import mavutil
 #recv_match
 # Bağlantıyı başlat
 master = mavutil.mavlink_connection('/dev/serial10', baud=57600)
+print("Connected")
 
 # Heartbeat mesajlarını dinle
 while True:
