@@ -11,7 +11,6 @@ master = mavutil.mavlink_connection('udp:127.0.0.1:14550')
 
 # Wait for the heartbeats to confirm the connection
 print("Waiting for heartbeat from the drone...")
-master.wait_heartbeat()
 print("Heartbeat from system (System ID: %d, Component ID: %d)" % (master.target_system, master.target_component))
 
 # Request basic information (for example, GPS data)        
