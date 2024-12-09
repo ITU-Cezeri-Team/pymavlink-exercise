@@ -11,7 +11,7 @@ import time
 master = mavutil.mavlink_connection('udpout:192.168.4.161:14540')
 print("Connected")
 
-
+master.set_mode(mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED)
 master.mav.command_long_send(
     1,  # Sistem ID (burada 1 genellikle drone'dur)
     1,  # Bileşen ID (genellikle 1)
@@ -25,6 +25,7 @@ master.mav.command_long_send(
     0,
     0
 )
+print("Cihaz arming komutu gönderildi.")
 
 master.mav.command_long_send(
     1,  # Sistem ID
@@ -41,6 +42,14 @@ master.mav.command_long_send(
 )
 
 print("Kalkış komutu gönderildi. Drone 10 metreye çıkacak.")
+
+while True:
+    msg = master.recv_match(type='HEARTBEAT', blocking=True)
+    system_status = msg.system_status
+    if system_status == mavutil.mavlink.MAV_STATE_ACTIVE:
+        print("Drone aktif ve uçuşa geçti.")
+    else:
+        print(f"Sistem durumu: {system_status}")
 '''
 master.mav.command_long_send(
     1,  # Sistem ID
@@ -55,6 +64,5 @@ master.mav.command_long_send(
     0,
     0
 )
-'''
 print("Cihaz disarming komutu gönderildi.")
-print("Cihaz arming komutu gönderildi.")
+'''
