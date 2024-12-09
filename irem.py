@@ -32,7 +32,7 @@ land_control = input("for LAND enter Y").lower()
 if land_control == 'y': 
     drone_connection.mav.command_long_send( drone_connection.target_system,           
                                         drone_connection.target_component,        
-                                        mavutil.mavlink.MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0 )
+                                        mavutil.mavlink.MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0, 0, 0)
 
 msg = drone_connection.recv_match(type='COMMAND_ACK', blocking=True)
 print(msg)
