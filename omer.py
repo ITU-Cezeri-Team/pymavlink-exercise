@@ -51,11 +51,7 @@ if answer == "y":
 
     # # Modu değiştir (GUIDED mode)
     print("Changing mode to GUIDED...")
-    connection.mav.set_mode_send(
-        1,  # Sistem ID
-        mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,  # Custom Mode Flag
-        4   # GUIDED mode (4: Guided Mode)
-    )
+    connection.mav.set_mode_send(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
 
     # # Mod değişikliklerinin gerçekleşmesini bekleyelim
     time.sleep(2)
