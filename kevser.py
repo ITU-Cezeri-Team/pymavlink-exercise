@@ -5,6 +5,12 @@ from pymavlink import mavutil
 # Bağlantıyı kur
 master = mavutil.mavlink_connection('/dev/serial0', baud=57600)
 print("Connection established")
+
+master.arducopter_arm()
+print("Motorlar aktif edildi.")
+
+
+
 """
 # Heartbeat mesajını bekle
 try:
@@ -14,9 +20,11 @@ except Exception as e:
     print(f"Heartbeat alınamadı: {e}")
     exit()  # Eğer heartbeat alınmazsa programı sonlandır
 """
+"""
 # Batarya durumunu al
 try:
-    battery = master.recv_match(type='BATTERY_STATUS', blocking=True)
+    battery = master.recv_match(type='BATTERY_STATUS', blocking=False)
+    print("Battery connected")
     if battery:
         print(f"Batarya Voltajı: {battery.voltages[0] / 1000} V")  # mV -> V dönüşümü
         print(f"Batarya Akımı: {battery.current_battery / 100} A")  # cA -> A dönüşümü
@@ -25,6 +33,7 @@ try:
         print("Batarya durumu alınamadı.")
 except Exception as e:
     print(f"Batarya durumu alınamadı: {e}")
+"""
 """
 # Heartbeat mesajını tekrar al
 try:
