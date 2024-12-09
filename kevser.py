@@ -6,8 +6,14 @@ from pymavlink import mavutil
 master = mavutil.mavlink_connection('/dev/serial0', baud=57600)
 print("Connection established")
 
+master.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
+print("Switched to GUIDED mode.")
+
 master.arducopter_arm()
 print("Motorlar aktif edildi.")
+
+
+
 
 master.arducopter_disarm()
 print("Motorlar pasif edildi.")
