@@ -58,17 +58,11 @@ if answer == "y":
     # Kalkış komutunu gönder (10 metre yükseklik hedefi)
     print("Sending takeoff command...")
     connection.mav.command_long_send(
-        1,  # Sistem ID
-        1,  # Bileşen ID
-        mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,  # Takeoff komutu
-        0,  # Parametre (0 = success, 1 = failure)
-        0,  # Parametre
-        0,  # Parametre
-        10,  # Kalkış yüksekliği (10 metre)
-        0,  # Parametre
-        0,  # Parametre
-        0,  # Parametre
-        0   # Parametre
+        connection.target_system, 
+        connection.target_component, 
+        mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 
+        0,  # confirmation (0: no confirmation needed)
+        0, 0, 0, 0, 0, 0, 10  # kalkış yüksekliği
     )
 
     # # Kalkış komutunun gönderildiğini belirten mesaj
