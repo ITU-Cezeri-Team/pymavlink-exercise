@@ -3,7 +3,7 @@ import time
 
 # Replace with your connection string. Here, I'm using a serial connection as an example.
 # For example, replace 'COM3' with the actual port name on your computer, or use 'udp:127.0.0.1:14550' for UDP connection.
-connection_string = '/dev/ttyUSB0'  # for Linux/OS X, 'COM3' for Windows
+connection_string = '192.168.4.113'  # for Linux/OS X, 'COM3' for Windows
 baud_rate = 57600  # Standard baud rate for most flight controllers
 
 # Create a connection
@@ -14,7 +14,7 @@ print("Waiting for heartbeat from the drone...")
 master.wait_heartbeat()
 print("Heartbeat from system (System ID: %d, Component ID: %d)" % (master.target_system, master.target_component))
 
-# Request basic information (for example, GPS data)
+# Request basic information (for example, GPS data)        
 master.mav.request_data_stream_send(master.target_system, master.target_component,
                                     mavutil.mavlink.MAV_DATA_STREAM_ALL, 1, 1)
 
