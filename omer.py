@@ -7,7 +7,7 @@ from pymavlink import mavutil
 #   This sets the system and component ID of remote system for the link
 #recv_match
 # Bağlantıyı başlat
-master = mavutil.mavlink_connection('/dev/serial10', baud=57600)
+master = mavutil.mavlink_connection('/dev/serial0', baud=57600)
 print("Connected")
 
 # Heartbeat mesajlarını dinle
