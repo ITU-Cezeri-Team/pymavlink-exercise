@@ -3,6 +3,7 @@ import threading
 from pynput import keyboard
 from pymavlink import mavutil
 
+
 # MAVLink bağlantısını başlat
 connection = mavutil.mavlink_connection('udp:192.168.4.113:14551')  # Bağlantı adresini uygun şekilde değiştirin
 print("connected")
