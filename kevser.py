@@ -9,6 +9,9 @@ print("Connection established")
 master.arducopter_arm()
 print("Motorlar aktif edildi.")
 
+master.arducopter_disarm()
+print("Motorlar pasif edildi.")
+
 
 
 """
