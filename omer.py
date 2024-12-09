@@ -46,8 +46,10 @@ def arm_drone():
         0,  # Unused
         0   # Unused
     )
+    if mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED:
+        print("Drone armed.")
+        
     time.sleep(3)  # Wait for arming to complete
-    print("Drone armed.")
 
 # Function to change the drone's mode to stabilize
 def stabilize_drone():
