@@ -17,6 +17,7 @@ except Exception as e:
 # Batarya durumunu al
 try:
     battery = master.recv_match(type='BATTERY_STATUS', blocking=True)
+    print("Battery connected")
     if battery:
         print(f"Batarya Voltajı: {battery.voltages[0] / 1000} V")  # mV -> V dönüşümü
         print(f"Batarya Akımı: {battery.current_battery / 100} A")  # cA -> A dönüşümü
