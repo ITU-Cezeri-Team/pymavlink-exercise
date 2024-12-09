@@ -5,6 +5,10 @@ print("connection is completed successfully")
 
 print(drone_connection.wait_heartbeat())
 
+drone_connection.mav.command_long_send(drone_connection.target_system,  # Hedef sistem kimliği
+                                         drone_connection.target_component,  # Hedef bileşen kimliği
+                                         mavutil.mavlink.MAV_CMD_DO_SET_MODE, 0, 0, 5, 0, 0, 0, 0, 0)
+
 armcontrol = input("for ARM enter Y").lower()
 
 if armcontrol == 'y':
