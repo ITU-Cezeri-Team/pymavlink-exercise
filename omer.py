@@ -166,7 +166,6 @@ def check_if_armed():
         print("No HEARTBEAT message received")
 
 # Bağlantıyı bekle
-connection.wait_heartbeat()
 print("Heartbeat received")
 
 # Force arm komutunu gönder
