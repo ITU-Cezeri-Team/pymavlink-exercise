@@ -31,10 +31,6 @@ if msg:
 
 # print("gps received")
 
-# Wait for a heartbeat to confirm connection
-connection.wait_heartbeat()
-print("Heartbeat received, connection successful.")
-
 # Function to arm the drone
 def arm_drone():
     print("Arming the drone...")
