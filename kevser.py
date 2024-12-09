@@ -7,8 +7,11 @@ master = mavutil.mavlink_connection('/dev/serial0')
 print("Connection established")
 
 # Heartbeat mesajını bekle
-master.wait_heartbeat()
-print("Heartbeat alındı! İHA iletişime hazır.")
+try:
+    master.wait_heartbeat(timeout=10)  # 10 saniye bekler
+    print("Heartbeat alındı! İHA iletişime hazır.")
+except Exception as e:
+    print(f"Heartbeat alınamadı: {e}")
 
 # Alınan heartbeat mesajını incele
 heartbeat = master.recv_match(type='HEARTBEAT', blocking=True)
