@@ -9,6 +9,7 @@ print("Connection established")
 arm_control = input("For ARM press Y: ").lower()
 
 if arm_control=="y":
+    master.set_mode(mavutil.mavlink.MAV_MODE_STABİLİZE_ARMED)
     master.arducopter_arm()
     print("Motorlar aktif edildi.")
 else:
@@ -28,6 +29,8 @@ if takeoff_control=="y":
     0, 0, 0, 0, 0, 0, takeoff_altitude  # kalkış yüksekliği
     )
     print(f"Takeoff command sent to reach {takeoff_altitude} meters.")
+    master.arducopter_disarm()
+    print("Motorlar pasif edildi.")
 
 
 
@@ -36,8 +39,7 @@ if takeoff_control=="y":
 
 
 
-master.arducopter_disarm()
-print("Motorlar pasif edildi.")
+
 
 
 
