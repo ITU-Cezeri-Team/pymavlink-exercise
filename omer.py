@@ -27,7 +27,7 @@ master.mav.command_long_send(
     0,  # Parametre
     0   # Parametre
 )
-master.arducopter_diasrm()
+master.arducopter_disarm()
 
 print("Kalkış komutu gönderildi. Drone 10 metreye çıkacak.")
 
