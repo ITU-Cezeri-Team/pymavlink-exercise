@@ -7,7 +7,7 @@ import time
 baud_rate = 57600  # Standard baud rate for most flight controllers
 
 # Create a connection
-master = mavutil.mavlink_connection('udp:127.0.0.1:14550')
+master = mavutil.mavlink_connection('udp:192.168.4.113:14550')
 
 # Wait for the heartbeats to confirm the connection
 print("Waiting for heartbeat from the drone...")
