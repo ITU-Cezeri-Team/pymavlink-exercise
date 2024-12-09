@@ -130,6 +130,7 @@ import time
 
 # MAVLink bağlantısını başlat
 connection = mavutil.mavlink_connection('udp:192.168.4.113:14550')  # Bağlantı adresini uygun şekilde değiştirin
+
 print("Connected to MAVLink")
 
 # Drone'u arm etme fonksiyonu (force arm)
@@ -154,7 +155,7 @@ def force_arm_drone():
 # Drone'un arm durumu kontrolü
 def check_if_armed():
     # HEARTBEAT mesajı al
-    msg = connection.recv_match(type='HEARTBEAT', blocking=False)
+    msg = connection.recv_match(type='HEARTBEAT', blocking=True, timeout = 5)
     
     if msg:
         # ARM durumunu kontrol et
