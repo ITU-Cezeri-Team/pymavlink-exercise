@@ -16,7 +16,7 @@ else:
 takeoff_control = input("For take off press Y: ").lower()
 
 if takeoff_control=="y":
-    master.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
+    master.set_mode(mavutil.mavlink.MAV_MODE_STABILIZE_ARMED)
     print("Switched to GUIDED mode.")
     takeoff_altitude = 10  # 10 metre
     master.mav.command_long_send(
