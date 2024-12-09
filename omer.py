@@ -1,176 +1,44 @@
-'''import time
-from pymavlink import mavutil
-
-
-# MAVLink bağlantısını başlat
-connection = mavutil.mavlink_connection('udp:192.168.4.113:14550')  # Bağlantı adresini uygun şekilde değiştirin
-print("connected")
-msg = connection.recv_match(type='GPS_RAW_INT', blocking=False)
-print("gps received")
-if msg:
-        # Extract the GPS information from the message
-        lat = msg.lat / 1e7  # Convert to degrees (lat is in 1e7 degrees)
-        lon = msg.lon / 1e7  # Convert to degrees (lon is in 1e7 degrees)
-        alt = msg.alt / 1000  # Convert to meters (alt is in mm)
-        
-        fix_type = msg.fix_type  # GPS fix type (0 = no fix, 1 = 2D fix, 2 = 3D fix, etc.)
-
-        # Print the GPS data
-        print(f"Latitude: {lat}°")
-        print(f"Longitude: {lon}°")
-        print(f"Altitude: {alt} meters")
-        print(f"Fix Type: {fix_type}")
-        
-        if fix_type == 3:
-            print("GPS 3D fix is available!")
-        elif fix_type == 2:
-            print("GPS 2D fix is available!")
-        else:
-            print("No GPS fix.")
-
-# print("gps received")
-
-# Function to arm the drone
-def arm_drone():
-    print("Arming the drone...")
-    connection.mav.command_long_send(
-        1,  # System ID
-        1,  # Component ID
-        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # Arm command
-        0,  # Confirmation (0 = no confirmation)
-        1,  # Armed (1 = armed, 0 = disarmed)
-        0,  # Unused
-        0,  # Unused
-        0,  # Unused
-        0,  # Unused
-        0,  # Unused
-        0   # Unused
-    )
-    if mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED:
-        print("Drone armed.")
-
-    time.sleep(3)  # Wait for arming to complete
-
-# Function to change the drone's mode to stabilize
-def stabilize_drone():
-    print("Changing drone mode to stabilize...")
-    connection.mav.set_mode_send(
-        1,  # System ID
-        mavutil.mavlink.MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,  # Custom mode enabled
-        mavutil.mavlink.MAV_MODE_GUIDED_ARMED  # Set mode to GUIDED, which is stabilized flight
-    )
-    time.sleep(2)  # Wait for the drone to switch modes
-    print("Drone is stabilized and in GUIDED mode.")
-
-# Function to send takeoff command
-def takeoff_drone(altitude=10):
-    print(f"Taking off to {altitude} meters.")
-    connection.mav.command_long_send(
-        1,  # System ID
-        1,  # Component ID
-        mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,  # Takeoff command
-        0,  # Confirmation (0 = no confirmation)
-        0,  # Latitude (not used)
-        0,  # Longitude (not used)
-        altitude,  # Target altitude (in meters)
-        0,  # Yaw angle (0 = no change)
-        0,  # Reserved
-        0,  # Reserved
-        0   # Reserved
-    )
-    time.sleep(5)  # Wait for takeoff to begin
-    print("Drone is in the air.")
-
-# Function to send land command
-def land_drone():
-    print("Landing the drone...")
-    connection.mav.command_long_send(
-        1,  # System ID
-        1,  # Component ID
-        mavutil.mavlink.MAV_CMD_NAV_LAND,  # Land command
-        0,  # Confirmation (0 = no confirmation)
-        0,  # Latitude (not used)
-        0,  # Longitude (not used)
-        0,  # Altitude (not used)
-        0,  # Reserved
-        0,  # Reserved
-        0,  # Reserved
-        0   # Reserved
-    )
-    print("Drone is landing.")
-
-# Ask the user if they are ready for takeoff
-ready_for_takeoff = input("Are you ready for takeoff? (yes/no): ").strip().lower()
-
-if ready_for_takeoff == "yes":
-    stabilize_drone()
-    time.sleep(2)
-
-    # Arm the drone
-    arm_drone()
-
-    # Stabilize the drone before takeoff
-
-    # Takeoff the drone to 10 meters
-    takeoff_drone(altitude=10)
-
-    # Listen for the 'Y' key to land
-    while True:
-        user_input = input("Drone is in the air. Press 'Y' to land the drone: ").strip().lower()
-        if user_input == "y":
-            # Land the drone if 'Y' is pressed
-            land_drone()
-            break  # Exit the loop after landing
-else:
-    print("Takeoff aborted.")
-'''
-
 from pymavlink import mavutil
 import time
 
-# MAVLink bağlantısını başlat
-connection = mavutil.mavlink_connection('udp:192.168.4.113:14550')  # Bağlantı adresini uygun şekilde değiştirin
+# Replace with your connection string. Here, I'm using a serial connection as an example.
+# For example, replace 'COM3' with the actual port name on your computer, or use 'udp:127.0.0.1:14550' for UDP connection.
+connection_string = '/dev/ttyUSB0'  # for Linux/OS X, 'COM3' for Windows
+baud_rate = 57600  # Standard baud rate for most flight controllers
 
-print("Connected to MAVLink")
+# Create a connection
+master = mavutil.mavlink_connection(connection_string, baud=baud_rate)
 
-# Drone'u arm etme fonksiyonu (force arm)
-def force_arm_drone():
-    print("Sending force arm command to the drone...")
-    connection.mav.command_long_send(
-        1,  # System ID (genellikle 1)
-        1,  # Component ID (genellikle 1)
-        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # Arm komutu
-        0,  # Confirmation (0 = no confirmation)
-        1,  # Armed (1 = armed, 0 = disarmed)
-        0,  # Unused
-        0,  # Unused
-        0,  # Unused
-        0,  # Unused
-        0,  # Unused
-        0   # Unused
-    )
-    time.sleep(3)  # Arming'in tamamlanması için bekle
-    print("Drone force armed.")
+# Wait for the heartbeats to confirm the connection
+print("Waiting for heartbeat from the drone...")
+master.wait_heartbeat()
+print("Heartbeat from system (System ID: %d, Component ID: %d)" % (master.target_system, master.target_component))
 
-# Drone'un arm durumu kontrolü
-def check_if_armed():
-    # HEARTBEAT mesajı al
-    msg = connection.recv_match(type='HEARTBEAT', blocking=True, timeout = 5)
-    
-    if msg:
-        # ARM durumunu kontrol et
-        if msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED:
-            print("Drone is ARMED")
-        else:
-            print("Drone is DISARMED")
-    else:
-        print("No HEARTBEAT message received")
+# Request basic information (for example, GPS data)
+master.mav.request_data_stream_send(master.target_system, master.target_component,
+                                    mavutil.mavlink.MAV_DATA_STREAM_ALL, 1, 1)
 
-# Bağlantıyı bekle
-print("Heartbeat received")
+# Let's print the GPS data
+for i in range(10):  # Get 10 GPS updates
+    msg = master.recv_match(type='GPS_RAW_INT', blocking=True)
+    print(f"GPS: {msg.lat}, {msg.lon}, {msg.alt}")
+    time.sleep(1)
 
-# Force arm komutunu gönder
-force_arm_drone()
+# Arm the drone
+print("Arming the drone...")
+master.mav.command_long_send(
+    master.target_system, master.target_component,
+    mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 1, 0, 0, 0, 0, 0, 0
+)
 
-# Arm durumunu kontrol et
-check_if_armed()
+time.sleep(5)
+
+# Disarm the drone (optional, you can skip this if you don't want to disarm after arming)
+print("Disarming the drone...")
+master.mav.command_long_send(
+    master.target_system, master.target_component,
+    mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 0, 0, 0, 0, 0, 0, 0
+)
+
+# Close the connection
+master.close()
