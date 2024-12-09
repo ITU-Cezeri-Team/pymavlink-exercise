@@ -101,11 +101,12 @@ def land_drone():
 ready_for_takeoff = input("Are you ready for takeoff? (yes/no): ").strip().lower()
 
 if ready_for_takeoff == "yes":
+    stabilize_drone()
+
     # Arm the drone
     arm_drone()
 
     # Stabilize the drone before takeoff
-    stabilize_drone()
 
     # Takeoff the drone to 10 meters
     takeoff_drone(altitude=10)
