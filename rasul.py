@@ -38,6 +38,8 @@ if takeoff_control=="y":
     master.arducopter_disarm()
     print("Motorlar pasif edildi.")
 
+# a
+
 
 
 
