@@ -3,9 +3,9 @@ import time
 
 # MAVLink bağlantısını başlat
 connection = mavutil.mavlink_connection('udp:172.20.10.3:14551')  # Bağlantı adresini uygun şekilde değiştirin
-
+print("connected")
 msg = connection.recv_match(type='GPS_RAW_INT', blocking=True)
-
+print("gps received")
 # Cihazın armed durumda olduğundan emin olun
 print("Arming the drone...")
 connection.mav.command_long_send(
