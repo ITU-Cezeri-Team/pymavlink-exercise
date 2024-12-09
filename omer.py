@@ -32,19 +32,8 @@ answer = input("ready to take off y/n: ").lower()
 if answer == "y":
  #Cihazın armed durumda olduğundan emin olun
     print("Arming the drone...")
-    connection.mav.command_long_send(
-        1,  # Sistem ID (Genellikle 1)
-        1,  # Bileşen ID (Genellikle 1)
-        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # Arming komutu
-        0,  # Parametre (0 = disarmed, 1 = armed)
-        1,  # Parametre (0 = disarmed, 1 = armed)
-        0,
-        0,
-        0,
-        0,
-        0,
-        0
-    )
+    connection.arducopter_arm()
+
 
     # # Birkaç saniye bekleyelim ki cihaz arming işlemini gerçekleştirsin
     time.sleep(3)
