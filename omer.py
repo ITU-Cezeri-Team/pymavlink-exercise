@@ -102,6 +102,7 @@ ready_for_takeoff = input("Are you ready for takeoff? (yes/no): ").strip().lower
 
 if ready_for_takeoff == "yes":
     stabilize_drone()
+    time.sleep(2)
 
     # Arm the drone
     arm_drone()
