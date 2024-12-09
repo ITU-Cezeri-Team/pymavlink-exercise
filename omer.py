@@ -5,7 +5,7 @@ import time
 connection = mavutil.mavlink_connection('udp:172.20.10.3:14551')  # Bağlantı adresini uygun şekilde değiştirin
 print("connected")
 msg = connection.recv_match(type='GPS_RAW_INT', blocking=False)
-
+print("gps received")
 if msg:
         # Extract the GPS information from the message
         lat = msg.lat / 1e7  # Convert to degrees (lat is in 1e7 degrees)
