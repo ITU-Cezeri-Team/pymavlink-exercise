@@ -20,7 +20,8 @@ message = connection.mav.command_long_send(
         0,       # param4 (unused)
         0,       # param5 (unused)
         0,       # param5 (unused)
-        0        # param6 (unused)
+        0,        # param6 (unused)
+        0
         )
 
 # Send the COMMAND_LONG
