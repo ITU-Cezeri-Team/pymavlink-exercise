@@ -3,7 +3,7 @@ from pymavlink import mavutil
 
 
 # MAVLink bağlantısını başlat
-connection = mavutil.mavlink_connection('udp:192.168.4.113:14550')  # Bağlantı adresini uygun şekilde değiştirin
+connection= mavutil.mavlink_connection('/dev/serial0', baud=57600)
 print("connected")
 msg = connection.recv_match(type='GPS_RAW_INT', blocking=False)
 print("gps received")
