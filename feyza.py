@@ -14,6 +14,15 @@ connection.mav.command_long_send(connection.target_system, connection.target_com
 msg = connection.recv_match(type="COMMAND_ACK",blocking=True)
 print(msg)
 
+# DISARM
+disarmcontrol = input("for DİSARM enter Y").lower()
+
+connection.mav.command_long_send(connection.target_system, 
+                                        connection.target_component,
+                                        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 0, 0, 0, 0, 0, 0, 0)
+msg = connection.recv_match(type="COMMAND_ACK",blocking=True)
+print(msg)
+
 # TAKE OFF
 connection.mav.command_long_send(connection.target_system, connection.target_component
                                  , mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0,0,0,0,0,0,0,10)
@@ -29,4 +38,12 @@ while 1:
     msg = connection.recv_match(
         type="MAV_CONTROLLER_OUTPUT", blocking=True)
     print(msg)
-    
+
+# LEND
+
+connection.mav.command_long_send( connection.target_system,           
+                                connection.target_component,        
+                                        mavutil.mavlink.MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0, 0, 0, 0)
+
+msg = connection.recv_match(type="COMMAND_ACK",blocking=True)
+print(msg)
