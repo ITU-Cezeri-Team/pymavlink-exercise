@@ -15,7 +15,7 @@ def force_arm_drone():
         mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # Arm komutu
         0,  # Confirmation (0 = no confirmation)
         1,  # Armed (1 = armed, 0 = disarmed)
-        21196,  # Unused
+        20000,  # Unused
         0,  # Unused
         0,  # Unused
         0,  # Unused
