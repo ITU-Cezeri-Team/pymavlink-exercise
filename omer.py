@@ -1,5 +1,3 @@
-
-
 from pymavlink import mavutil
 
 # Bağlantıyı kur
