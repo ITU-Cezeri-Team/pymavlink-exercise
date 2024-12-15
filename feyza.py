@@ -11,18 +11,18 @@ print("Heartbeat from system (system %u component %u)" % (connection.target_syst
 # param1: MAVLINK_MSG_ID_BATTERY_STATUS (message to stream)
 # param2: 1000000 (Stream interval in microseconds)
 connection.mav.command_long_send(
-        connection.target_system,  # Target system ID
-        connection.target_component,  # Target component ID
-        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # ARM komutu
-        0,  # Confirmation
-        1, # param2: Interval in microseconds
-        0,       # param3 (unused)
-        0,       # param4 (unused)
-        0,       # param5 (unused)
-        0,       # param5 (unused)
-        0,        # param6 (unused)
-        0
-        )
+    1,
+    1,
+    mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,  # ARM komutu
+    0,  # Confirmation
+    1, # param2: Interval in microseconds
+    0,       # param3 (unused)
+    0,       # param4 (unused)
+    0,       # param5 (unused)
+    0,       # param5 (unused)
+    0,        # param6 (unused)
+    0
+    )
 
 
 
