@@ -1,42 +1,76 @@
 from pymavlink import mavutil
 
-drone_connection= mavutil.mavlink_connection('/dev/serial0', baud=57600)
-print("connection is completed successfully")
+# Bağlantıyı kur
+master = mavutil.mavlink_connection('/dev/serial0', baud=57600)
+print("Connection established")
 
-print(drone_connection.wait_heartbeat())
+arm_control = input("For ARM press Y: ").lower()
 
-drone_connection.mav.command_long_send(drone_connection.target_system,  # Hedef sistem kimliği
-                                         drone_connection.target_component,  # Hedef bileşen kimliği
-                                         mavutil.mavlink.MAV_CMD_DO_SET_MODE, 0, 0, 5, 0, 0, 0, 0, 0)
+if arm_control=="y":
+    master.set_mode(mavutil.mavlink.MAV_MODE_STABİLİZE_ARMED)
+    master.arducopter_arm()
+    print("Motorlar aktif edildi.")
+else:
+    pass 
 
-armcontrol = input("for ARM enter Y").lower()
+takeoff_control = input("For take off press Y: ").lower()
 
-if armcontrol == 'y':
-    drone_connection.mav.command_long_send(drone_connection.target_system, 
-                                        drone_connection.target_component,
-                                        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 1, 0, 0, 0, 0, 0, 0)
+if takeoff_control=="y":
+    master.set_mode(mavutil.mavlink.MAV_MODE_GUIDED_ARMED)
+    print("Switched to GUIDED mode.")
+    takeoff_altitude = 10  # 10 metre
+    master.mav.command_long_send(
+    master.target_system, 
+    master.target_component, 
+    mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 
+    0,  # confirmation (0: no confirmation needed)
+    0, 0, 0, 0, 0, 0, takeoff_altitude  # kalkış yüksekliği
+    )
+    print(f"Takeoff command sent to reach {takeoff_altitude} meters.")
+    master.arducopter_disarm()
+    print("Motorlar pasif edildi.")
 
 
-disarmcontrol = input("for DİSARM enter Y").lower()
 
-if disarmcontrol == 'y':
-    drone_connection.mav.command_long_send(drone_connection.target_system, 
-                                        drone_connection.target_component,
-                                        mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, 0, 0, 0, 0, 0, 0, 0, 0)
 
-take_off_control = input("for TAKE OFF enter Y").lower()
 
-if take_off_control == 'y': 
-    drone_connection.mav.command_long_send(drone_connection.target_system,
-                                        drone_connection.target_component,
-                                        mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, 10)
 
-land_control = input("for LAND enter Y").lower()
 
-if land_control == 'y': 
-    drone_connection.mav.command_long_send( drone_connection.target_system,           
-                                        drone_connection.target_component,        
-                                        mavutil.mavlink.MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0, 0, 0, 0)
 
-msg = drone_connection.recv_match(type='COMMAND_ACK', blocking=True)
-print(msg)
+
+
+
+
+"""
+# Heartbeat mesajını bekle
+try:
+    master.wait_heartbeat(timeout=10)  # 10 saniye bekler
+    print("Heartbeat alındı! İHA iletişime hazır.")
+except Exception as e:
+    print(f"Heartbeat alınamadı: {e}")
+    exit()  # Eğer heartbeat alınmazsa programı sonlandır
+"""
+"""
+# Batarya durumunu al
+try:
+    battery = master.recv_match(type='BATTERY_STATUS', blocking=False)
+    print("Battery connected")
+    if battery:
+        print(f"Batarya Voltajı: {battery.voltages[0] / 1000} V")  # mV -> V dönüşümü
+        print(f"Batarya Akımı: {battery.current_battery / 100} A")  # cA -> A dönüşümü
+        print(f"Kalan Batarya: {battery.battery_remaining} %")
+    else:
+        print("Batarya durumu alınamadı.")
+except Exception as e:
+    print(f"Batarya durumu alınamadı: {e}")
+"""
+"""
+# Heartbeat mesajını tekrar al
+try:
+    heartbeat = master.recv_match(type='HEARTBEAT', blocking=True)
+    print(f"Sistem Durumu: {heartbeat.system_status}")
+    print(f"Temel Mod: {heartbeat.base_mode}")
+    print(f"Özel Mod: {heartbeat.custom_mode}")
+except Exception as e:
+    print(f"Heartbeat mesajı alınamadı: {e}")
+"""
