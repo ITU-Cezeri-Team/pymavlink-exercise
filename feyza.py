@@ -24,7 +24,7 @@ print(msg)
 
 connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, connection.target_system, 
                                                                                   connection.target_component,
-                                                                                    mavutil.mavlink.MAV_FRAME_LOCAL_NED,int(0b110111111000), 10,0,-10,0,0,0,0,0))
+                                                                                    mavutil.mavlink.MAV_FRAME_LOCAL_NED,int(0b110111111000), 20,0,-10,0,0,0,0,0,0,0,0))
 
 while 1:
     msg = connection.recv_match(
